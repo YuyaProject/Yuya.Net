@@ -6,7 +6,11 @@ YUYA projesinde amacım yazılım uzmanları için yardımcı araçlar hazırlam
 
 ### Yuya.Net
 
-Bu proje içinde MS.Net ile ilgili ek geliştirmeler yapacağız. 
+Bu proje içinde MS.Net ile ilgili ek geliştirmeler yapacağız.
+
+#### Dokümantasyon
+
+Proje ile ilgili dokümanların hazılanması için bu Branch'i açtım. Dokümanları bu branch üzerinden hazırlayıp, önce develop sonrada main branc'ine birleştireceğim(merge).
 
 #### Yuya.Net.Core
 
