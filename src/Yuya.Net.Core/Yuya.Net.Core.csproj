@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.0;net45;net451;net452;net46;net461;net462;net47;net471</TargetFrameworks>
+    <Authors>Alper Konuralp</Authors>
+  </PropertyGroup>
+
+</Project>
