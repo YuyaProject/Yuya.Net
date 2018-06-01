@@ -5,6 +5,10 @@ using log4net.Repository;
 
 namespace Yuya.Net.Logging.Log4Net
 {
+    /// <summary>
+    /// Log4Net Log Manager Class
+    /// </summary>
+    /// <seealso cref="Yuya.Net.Logging.ILogManager" />
     internal class Log4NetLogManager : ILogManager
     {
         private readonly ILoggerRepository _logRepository;

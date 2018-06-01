@@ -6,12 +6,12 @@ namespace Yuya.Net.Logging
     /// Boş logger sınıfı. Bu sınıf hiç bir iş yapmaz. 
     /// </summary>
     /// <seealso cref="Yuya.Net.Logging.ILogger" />
-    public sealed class NullLogger : ILogger
+    public sealed class NullLogger : BaseLogger, ILogger
     {
         /// <summary>
-        /// Prevents a default instance of the <see cref="NullLogger"/> class from being created.
+        /// Prevents a default instance of the <see cref="NullLogger" /> class from being created.
         /// </summary>
-        private NullLogger()
+        private NullLogger() : base(string.Empty)
         {
 
         }
@@ -29,7 +29,7 @@ namespace Yuya.Net.Logging
         /// </summary>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Debug(string format, params object[] arguments)
+        public override void Debug(string format, params object[] arguments)
         {
         }
 
@@ -39,7 +39,7 @@ namespace Yuya.Net.Logging
         /// <param name="innerException">The inner exception.</param>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Debug(Exception innerException, string format, params object[] arguments)
+        public override void Debug(Exception innerException, string format, params object[] arguments)
         {
         }
 
@@ -48,7 +48,7 @@ namespace Yuya.Net.Logging
         /// </summary>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Error(string format, params object[] arguments)
+        public override void Error(string format, params object[] arguments)
         {
         }
 
@@ -58,7 +58,7 @@ namespace Yuya.Net.Logging
         /// <param name="innerException">The inner exception.</param>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Error(Exception innerException, string format, params object[] arguments)
+        public override void Error(Exception innerException, string format, params object[] arguments)
         {
         }
 
@@ -67,7 +67,7 @@ namespace Yuya.Net.Logging
         /// </summary>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Fatal(string format, params object[] arguments)
+        public override void Fatal(string format, params object[] arguments)
         {
         }
 
@@ -77,7 +77,7 @@ namespace Yuya.Net.Logging
         /// <param name="innerException">The inner exception.</param>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Fatal(Exception innerException, string format, params object[] arguments)
+        public override void Fatal(Exception innerException, string format, params object[] arguments)
         {
         }
 
@@ -86,7 +86,7 @@ namespace Yuya.Net.Logging
         /// </summary>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Info(string format, params object[] arguments)
+        public override void Info(string format, params object[] arguments)
         {
         }
 
@@ -96,7 +96,7 @@ namespace Yuya.Net.Logging
         /// <param name="innerException">The inner exception.</param>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Info(Exception innerException, string format, params object[] arguments)
+        public override void Info(Exception innerException, string format, params object[] arguments)
         {
         }
 
@@ -106,7 +106,7 @@ namespace Yuya.Net.Logging
         /// <param name="severity">The severity.</param>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Log(LoggingSeverity severity, string format, params object[] arguments)
+        public override void Log(LoggingSeverity severity, string format, params object[] arguments)
         {
         }
 
@@ -117,7 +117,7 @@ namespace Yuya.Net.Logging
         /// <param name="innerException">The inner exception.</param>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Log(LoggingSeverity severity, Exception innerException, string format, params object[] arguments)
+        public override void Log(LoggingSeverity severity, Exception innerException, string format, params object[] arguments)
         {
         }
 
@@ -126,7 +126,7 @@ namespace Yuya.Net.Logging
         /// </summary>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Warn(string format, params object[] arguments)
+        public override void Warn(string format, params object[] arguments)
         {
         }
 
@@ -136,7 +136,7 @@ namespace Yuya.Net.Logging
         /// <param name="innerException">The inner exception.</param>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Warn(Exception innerException, string format, params object[] arguments)
+        public override void Warn(Exception innerException, string format, params object[] arguments)
         {
         }
     }

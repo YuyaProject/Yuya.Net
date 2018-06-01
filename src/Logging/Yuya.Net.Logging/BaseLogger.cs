@@ -19,6 +19,7 @@ namespace Yuya.Net.Logging
 
         public string Name { get; }
 
+        #region Debug
         /// <summary>
         /// Log debug messages.
         /// </summary>
@@ -34,6 +35,18 @@ namespace Yuya.Net.Logging
         /// <param name="arguments">The message format argument array.</param>
         public abstract void Debug(Exception innerException, string format, params object[] arguments);
 
+
+        /// <summary>
+        /// Debugs the specified log message generator.
+        /// </summary>
+        /// <param name="logMessageGenerator">The log message generator.</param>
+        public virtual void Debug(LogMessageGenerator logMessageGenerator)
+        {
+            Debug(logMessageGenerator());
+        }
+        #endregion
+
+        #region Error
         /// <summary>
         /// Log error messages.
         /// </summary>
@@ -50,6 +63,17 @@ namespace Yuya.Net.Logging
         public abstract void Error(Exception innerException, string format, params object[] arguments);
 
         /// <summary>
+        /// Errors the specified log message generator.
+        /// </summary>
+        /// <param name="logMessageGenerator">The log message generator.</param>
+        public virtual void Error(LogMessageGenerator logMessageGenerator)
+        {
+            Error(logMessageGenerator());
+        }
+        #endregion
+
+        #region Fatal
+        /// <summary>
         /// Log fatal messages.
         /// </summary>
         /// <param name="format">The message format string.</param>
@@ -64,6 +88,17 @@ namespace Yuya.Net.Logging
         /// <param name="arguments">The message format argument array.</param>
         public abstract void Fatal(Exception innerException, string format, params object[] arguments);
 
+        /// <summary>
+        /// Fatals the specified log message generator.
+        /// </summary>
+        /// <param name="logMessageGenerator">The log message generator.</param>
+        public virtual void Fatal(LogMessageGenerator logMessageGenerator)
+        {
+            Fatal(logMessageGenerator());
+        }
+        #endregion
+
+        #region Info
         /// <summary>
         /// Log information messages.
         /// </summary>
@@ -80,6 +115,17 @@ namespace Yuya.Net.Logging
         public abstract void Info(Exception innerException, string format, params object[] arguments);
 
         /// <summary>
+        /// Informations the specified log message generator.
+        /// </summary>
+        /// <param name="logMessageGenerator">The log message generator.</param>
+        public virtual void Info(LogMessageGenerator logMessageGenerator)
+        {
+            Info(logMessageGenerator());
+        }
+        #endregion
+
+        #region Warn
+        /// <summary>
         /// Log warning messages.
         /// </summary>
         /// <param name="format">The message format string.</param>
@@ -95,12 +141,23 @@ namespace Yuya.Net.Logging
         public abstract void Warn(Exception innerException, string format, params object[] arguments);
 
         /// <summary>
+        /// Warns the specified log message generator.
+        /// </summary>
+        /// <param name="logMessageGenerator">The log message generator.</param>
+        public virtual void Warn(LogMessageGenerator logMessageGenerator)
+        {
+            Warn(logMessageGenerator());
+        }
+        #endregion
+
+        #region Log
+        /// <summary>
         /// Log messages with the severity type.
         /// </summary>
         /// <param name="severity">The severity.</param>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Log(LoggingSeverity severity, string format, params object[] arguments)
+        public virtual void Log(LoggingSeverity severity, string format, params object[] arguments)
         {
             switch (severity)
             {
@@ -131,7 +188,7 @@ namespace Yuya.Net.Logging
         /// <param name="innerException">The inner exception.</param>
         /// <param name="format">The message format string.</param>
         /// <param name="arguments">The message format argument array.</param>
-        public void Log(LoggingSeverity severity, Exception innerException, string format, params object[] arguments)
+        public virtual void Log(LoggingSeverity severity, Exception innerException, string format, params object[] arguments)
         {
             switch (severity)
             {
@@ -155,5 +212,15 @@ namespace Yuya.Net.Logging
             }
         }
 
+        /// <summary>
+        /// Logs the specified severity.
+        /// </summary>
+        /// <param name="severity">The severity.</param>
+        /// <param name="logMessageGenerator">The log message generator.</param>
+        public virtual void Log(LoggingSeverity severity, LogMessageGenerator logMessageGenerator)
+        {
+            Log(severity, logMessageGenerator());
+        }
+        #endregion
     }
 }

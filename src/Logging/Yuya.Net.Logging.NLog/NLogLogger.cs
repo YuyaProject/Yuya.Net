@@ -1,23 +1,23 @@
-﻿using log4net;
+﻿using NLog;
 using System;
 
-namespace Yuya.Net.Logging.Log4Net
+namespace Yuya.Net.Logging.NLog
 {
     /// <summary>
-    /// Log4Net için logger sınıf uygulaması.
+    /// NLog Logger Class
     /// </summary>
     /// <seealso cref="Yuya.Net.Logging.BaseLogger" />
-    internal class Log4NetLogger : BaseLogger
+    internal class NLogLogger : BaseLogger
     {
-        private readonly ILog _log;
+        private readonly global::NLog.ILogger _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Log4NetLogger"/> class.
+        /// Initializes a new instance of the <see cref="NLogLogger"/> class.
         /// </summary>
-        /// <param name="log">The log.</param>
-        internal Log4NetLogger(ILog log) : base(log.Logger.Name)
+        /// <param name="logger">The logger.</param>
+        internal NLogLogger(global::NLog.ILogger logger) : base(logger.Name)
         {
-            _log = log;
+            _logger = logger;
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Yuya.Net.Logging.Log4Net
         /// <param name="arguments">The message format argument array.</param>
         public override void Debug(string format, params object[] arguments)
         {
-            _log.DebugFormat(format, arguments);
+            _logger.Debug(format, arguments);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Yuya.Net.Logging.Log4Net
         /// <param name="arguments">The message format argument array.</param>
         public override void Debug(Exception innerException, string format, params object[] arguments)
         {
-            _log.Debug(string.Format(format, arguments), innerException);
+            _logger.Debug(innerException, format, arguments);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Yuya.Net.Logging.Log4Net
         /// <param name="arguments">The message format argument array.</param>
         public override void Error(string format, params object[] arguments)
         {
-            _log.ErrorFormat(format, arguments);
+            _logger.Error(format, arguments);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Yuya.Net.Logging.Log4Net
         /// <param name="arguments">The message format argument array.</param>
         public override void Error(Exception innerException, string format, params object[] arguments)
         {
-            _log.Error(string.Format(format, arguments), innerException);
+            _logger.Error(innerException, format, arguments);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Yuya.Net.Logging.Log4Net
         /// <param name="arguments">The message format argument array.</param>
         public override void Fatal(string format, params object[] arguments)
         {
-            _log.FatalFormat(format, arguments);
+            _logger.Fatal(format, arguments);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Yuya.Net.Logging.Log4Net
         /// <param name="arguments">The message format argument array.</param>
         public override void Fatal(Exception innerException, string format, params object[] arguments)
         {
-            _log.Fatal(string.Format(format, arguments), innerException);
+            _logger.Fatal(innerException, format, arguments);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Yuya.Net.Logging.Log4Net
         /// <param name="arguments">The message format argument array.</param>
         public override void Info(string format, params object[] arguments)
         {
-            _log.InfoFormat(format, arguments);
+            _logger.Info(format, arguments);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Yuya.Net.Logging.Log4Net
         /// <param name="arguments">The message format argument array.</param>
         public override void Info(Exception innerException, string format, params object[] arguments)
         {
-            _log.Info(string.Format(format, arguments), innerException);
+            _logger.Info(innerException, format, arguments);
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Yuya.Net.Logging.Log4Net
         /// <param name="arguments">The message format argument array.</param>
         public override void Warn(string format, params object[] arguments)
         {
-            _log.WarnFormat(format, arguments);
+            _logger.Warn(format, arguments);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace Yuya.Net.Logging.Log4Net
         /// <param name="arguments">The message format argument array.</param>
         public override void Warn(Exception innerException, string format, params object[] arguments)
         {
-            _log.Warn(string.Format(format, arguments), innerException);
+            _logger.Warn(innerException, format, arguments);
         }
     }
 }

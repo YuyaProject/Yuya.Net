@@ -8,7 +8,14 @@
     <RepositoryUrl>https://github.com/YuyaProject/Yuya.Net</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Copyright>Alper Konuralp</Copyright>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="4.5.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Yuya.Net.Logging\Yuya.Net.Logging.csproj" />
+  </ItemGroup>
 
 </Project>
