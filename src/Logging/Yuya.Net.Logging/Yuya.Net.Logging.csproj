@@ -8,6 +8,7 @@
     <RepositoryUrl>https://github.com/YuyaProject/Yuya.Net</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Copyright>Alper Konuralp</Copyright>
   </PropertyGroup>
 
 </Project>
