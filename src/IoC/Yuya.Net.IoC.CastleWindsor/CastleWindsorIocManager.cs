@@ -5,10 +5,25 @@ using System.Linq;
 
 namespace Yuya.Net.IoC.CastleWindsor
 {
-    public class CastleWindsorIocManager : IocManager
+    internal class CastleWindsorIocManager : IocManagerBase
     {
-        private readonly WindsorContainer Container = new WindsorContainer();
+        private readonly WindsorContainer Container;
 
+        internal CastleWindsorIocManager(string name) : base(name)
+        {
+            // Create a Instance
+            Container = new WindsorContainer();
+
+            // Add this class to container
+            Container.Register(
+                Component.For<IIocManager>().Instance(this),
+                Component.For<IIocResolver>().Instance(this),
+                Component.For<IIocRegisterer>().Instance(this));
+        }
+
+        public override string IocTypeName => "CastleWindsor";
+
+        #region IsRegister
         /// <summary>
         /// Checks whether given type is registered before.
         /// </summary>
@@ -26,7 +41,9 @@ namespace Yuya.Net.IoC.CastleWindsor
         {
             return Container.Kernel.HasComponent(typeof(TType));
         }
+        #endregion
 
+        #region Register Methods
         public override IIocManager Register<TService>(TService implementation)
         {
             Container.Register(Component.For<TService>().Instance(implementation));
@@ -92,6 +109,8 @@ namespace Yuya.Net.IoC.CastleWindsor
                 Container.Register(Component.For<TService>().LifestyleTransient().Named(name));
             return this;
         }
+
+        #endregion
 
         #region Resolve Methods
 

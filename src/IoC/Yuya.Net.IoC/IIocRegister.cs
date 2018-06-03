@@ -2,7 +2,7 @@
 
 namespace Yuya.Net.IoC
 {
-    public interface IIocRegister
+    public interface IIocRegisterer: IDisposable
     {
 
         #region Instance

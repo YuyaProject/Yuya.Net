@@ -2,26 +2,32 @@
 
 namespace Yuya.Net.IoC
 {
-    public abstract class IocManager : IIocManager
+    public abstract class IocManagerBase : IIocManager, IIocRegisterer, IIocResolver
     {
-        private bool _isDisposed = false;
-
-        public virtual void Dispose()
+        protected IocManagerBase(string name)
         {
-            if (!_isDisposed)
-            {
-                _isDisposed = true;
-                OnDisposing();
-            }
+            Name = name;
         }
 
-        protected virtual void OnDisposing() {
+        #region IIocManager
 
-        }
+        public string Name { get; }
 
+        public abstract string IocTypeName { get; }
+
+        public IIocResolver Resolver { get { return this; } }
+
+        public IIocRegisterer Registerer { get { return this; } }
+        #endregion
+
+        #region IsRegistered
         public abstract bool IsRegistered(Type type);
 
         public abstract bool IsRegistered<T>();
+        #endregion
+
+        #region IIocRegister
+        public abstract TService ResolveByName<TService>(string name);
 
         public abstract IIocManager Register<TService>(TService implementation) where TService : class;
 
@@ -42,7 +48,9 @@ namespace Yuya.Net.IoC
             where TImplementation : TService;
 
         public abstract IIocManager RegisterTransient<TService>(string name = null) where TService : class;
+        #endregion
 
+        #region IIocResolver
         public abstract void Release(object obj);
 
         public abstract T Resolve<T>();
@@ -62,7 +70,25 @@ namespace Yuya.Net.IoC
         public abstract object[] ResolveAll(Type type);
 
         public abstract object[] ResolveAll(Type type, object argumentsAsAnonymousType);
+        #endregion
 
-        public abstract TService ResolveByName<TService>(string name);
+        #region IDisposible 
+        private bool _isDisposed = false;
+
+        public virtual void Dispose()
+        {
+            if (!_isDisposed)
+            {
+                _isDisposed = true;
+                OnDisposing();
+            }
+        }
+
+        protected virtual void OnDisposing()
+        {
+
+        }
+        #endregion
+
     }
 }

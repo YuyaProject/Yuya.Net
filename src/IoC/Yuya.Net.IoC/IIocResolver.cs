@@ -2,8 +2,14 @@
 
 namespace Yuya.Net.IoC
 {
-    public interface IIocResolver
+    public interface IIocResolver : IDisposable
     {
+        /// <summary>
+        /// Resolves the name of the by.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         TService ResolveByName<TService>(string name);
 
         /// <summary>
