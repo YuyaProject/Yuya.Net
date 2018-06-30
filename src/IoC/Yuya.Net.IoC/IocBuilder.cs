@@ -6,6 +6,7 @@ namespace Yuya.Net.IoC
     {
         public IocBuilder(string name)
         {
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
             Name = name;
         }
 

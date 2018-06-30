@@ -15,10 +15,7 @@ namespace Yuya.Net.IoC.CastleWindsor
             Container = new WindsorContainer();
 
             // Add this class to container
-            Container.Register(
-                Component.For<IIocManager>().Instance(this),
-                Component.For<IIocResolver>().Instance(this),
-                Component.For<IIocRegisterer>().Instance(this));
+            Container.Register(Component.For<IIocManager, IIocResolver, IIocRegisterer>().Instance(this));
         }
 
         public override string IocTypeName => "CastleWindsor";
@@ -50,29 +47,41 @@ namespace Yuya.Net.IoC.CastleWindsor
             return this;
         }
 
-        public override IIocManager RegisterSingleton<TService, TImplementation>(string name = null)
+        public override IIocManager RegisterSingleton<TService, TImplementation>(string name = null, bool isDefault = false)
         {
             var config = Component.For<TService>().ImplementedBy<TImplementation>().LifestyleSingleton();
+
+            if (isDefault)
+                config.IsDefault();
+
             if (string.IsNullOrWhiteSpace(name))
                 Container.Register(config);
             else
                 Container.Register(config.Named(name));
-
             return this;
         }
 
-        public override IIocManager RegisterSingleton<TService>(string name = null)
+        public override IIocManager RegisterSingleton<TService>(string name = null, bool isDefault = false)
         {
+            ComponentRegistration<TService> config = Component.For<TService>().LifestyleSingleton();
+
+            if (isDefault)
+                config.IsDefault();
+
             if (string.IsNullOrWhiteSpace(name))
-                Container.Register(Component.For<TService>().LifestyleSingleton());
+                Container.Register(config);
             else
-                Container.Register(Component.For<TService>().LifestyleSingleton().Named(name));
+                Container.Register(config.Named(name));
             return this;
         }
 
-        public override IIocManager RegisterPerThread<TService, TImplementation>(string name = null)
+        public override IIocManager RegisterPerThread<TService, TImplementation>(string name = null, bool isDefault = false)
         {
             var config = Component.For<TService>().ImplementedBy<TImplementation>().LifestylePerThread();
+
+            if (isDefault)
+                config.IsDefault();
+
             if (string.IsNullOrWhiteSpace(name))
                 Container.Register(config);
             else
@@ -81,18 +90,27 @@ namespace Yuya.Net.IoC.CastleWindsor
             return this;
         }
 
-        public override IIocManager RegisterPerThread<TService>(string name = null)
+        public override IIocManager RegisterPerThread<TService>(string name = null, bool isDefault = false)
         {
+            ComponentRegistration<TService> config = Component.For<TService>().LifestylePerThread();
+
+            if (isDefault)
+                config.IsDefault();
+
             if (string.IsNullOrWhiteSpace(name))
-                Container.Register(Component.For<TService>().LifestylePerThread());
+                Container.Register(config);
             else
-                Container.Register(Component.For<TService>().LifestylePerThread().Named(name));
+                Container.Register(config.Named(name));
             return this;
         }
 
-        public override IIocManager RegisterTransient<TService, TImplementation>(string name = null)
+        public override IIocManager RegisterTransient<TService, TImplementation>(string name = null, bool isDefault = false)
         {
             var config = Component.For<TService>().ImplementedBy<TImplementation>().LifestyleTransient();
+
+            if (isDefault)
+                config.IsDefault();
+
             if (string.IsNullOrWhiteSpace(name))
                 Container.Register(config);
             else
@@ -101,12 +119,17 @@ namespace Yuya.Net.IoC.CastleWindsor
             return this;
         }
 
-        public override IIocManager RegisterTransient<TService>(string name = null)
+        public override IIocManager RegisterTransient<TService>(string name = null, bool isDefault = false)
         {
+            ComponentRegistration<TService> config = Component.For<TService>().LifestyleTransient();
+
+            if (isDefault)
+                config.IsDefault();
+
             if (string.IsNullOrWhiteSpace(name))
-                Container.Register(Component.For<TService>().LifestyleTransient());
+                Container.Register(config);
             else
-                Container.Register(Component.For<TService>().LifestyleTransient().Named(name));
+                Container.Register(config.Named(name));
             return this;
         }
 

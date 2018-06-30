@@ -2,7 +2,7 @@
 
 namespace Yuya.Net.IoC
 {
-    public interface IIocRegisterer: IDisposable
+    public interface IIocRegisterer : IDisposable
     {
 
         #region Instance
@@ -16,31 +16,31 @@ namespace Yuya.Net.IoC
         #endregion
 
         #region Singletons
-        IIocManager RegisterSingleton<TService, TImplementation>(string name = null)
+        IIocManager RegisterSingleton<TService, TImplementation>(string name = null, bool isDefault = false)
             where TService : class
             where TImplementation : TService;
 
-        IIocManager RegisterSingleton<TService>(string name = null)
+        IIocManager RegisterSingleton<TService>(string name = null, bool isDefault = false)
             where TService : class;
         #endregion
 
         #region Transients
 
-        IIocManager RegisterTransient<TService, TImplementation>(string name = null)
+        IIocManager RegisterTransient<TService, TImplementation>(string name = null, bool isDefault = false)
             where TService : class
             where TImplementation : TService;
 
-        IIocManager RegisterTransient<TService>(string name = null)
+        IIocManager RegisterTransient<TService>(string name = null, bool isDefault = false)
             where TService : class;
         #endregion
 
         #region Thread
 
-        IIocManager RegisterPerThread<TService, TImplementation>(string name = null)
+        IIocManager RegisterPerThread<TService, TImplementation>(string name = null, bool isDefault = false)
             where TService : class
             where TImplementation : TService;
 
-        IIocManager RegisterPerThread<TService>(string name = null)
+        IIocManager RegisterPerThread<TService>(string name = null, bool isDefault = false)
             where TService : class;
         #endregion
 
