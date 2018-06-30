@@ -1,4 +1,5 @@
-﻿using Shouldly;
+﻿using Castle.MicroKernel;
+using Shouldly;
 using System;
 using System.Linq;
 using Xunit;
@@ -106,8 +107,78 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        [Fact]
+        public void Should_Fail_Circular_Constructor_Dependency()
+        {
+            using (IIocManager iocManager = CreateTestIocManager())
+            {
+                iocManager.Registerer.RegisterTransient<MyClass1>();
+                iocManager.Registerer.RegisterTransient<MyClass2>();
+                iocManager.Registerer.RegisterTransient<MyClass3>();
+
+                Assert.Throws<CircularDependencyException>(() => iocManager.Resolver.Resolve<MyClass1>());
+            }
+        }
 
 
+
+
+        [Fact]
+        public void Should_Success_Circular_Property_Injection_Transient()
+        {
+            using (IIocManager iocManager = CreateTestIocManager())
+            {
+                MyClass11.CreateCount = 0;
+                MyClass12.CreateCount = 0;
+                MyClass13.CreateCount = 0;
+
+                iocManager.Registerer.RegisterTransient<MyClass11>();
+                iocManager.Registerer.RegisterTransient<MyClass12>();
+                iocManager.Registerer.RegisterTransient<MyClass13>();
+
+                var obj1 = iocManager.Resolver.Resolve<MyClass11>();
+                obj1.Obj2.ShouldNotBe(null);
+                obj1.Obj3.ShouldNotBe(null);
+                obj1.Obj2.Obj3.ShouldNotBe(null);
+
+                var obj2 = iocManager.Resolver.Resolve<MyClass12>();
+                obj2.Obj1.ShouldNotBe(null);
+                obj2.Obj3.ShouldNotBe(null);
+                obj2.Obj1.Obj3.ShouldNotBe(null);
+
+                MyClass11.CreateCount.ShouldBe(2);
+                MyClass12.CreateCount.ShouldBe(2);
+                MyClass13.CreateCount.ShouldBe(4);
+            }
+        }
+
+        [Fact]
+        public void Should_Success_Circular_Property_Injection_Singleton()
+        {
+            using (IIocManager iocManager = CreateTestIocManager())
+            {
+                MyClass11.CreateCount = 0;
+                MyClass12.CreateCount = 0;
+                MyClass13.CreateCount = 0;
+
+                iocManager.Registerer.RegisterSingleton<MyClass11>();
+                iocManager.Registerer.RegisterSingleton<MyClass12>();
+                iocManager.Registerer.RegisterSingleton<MyClass13>();
+
+                var obj1 = iocManager.Resolver.Resolve<MyClass11>();
+                obj1.Obj2.ShouldNotBe(null);
+                obj1.Obj3.ShouldNotBe(null);
+                obj1.Obj2.Obj3.ShouldNotBe(null);
+
+                var obj2 = iocManager.Resolver.Resolve<MyClass12>();
+                obj2.Obj1.ShouldBe(null); //!!!Notice: It's null
+                obj2.Obj3.ShouldNotBe(null);
+
+                MyClass11.CreateCount.ShouldBe(1);
+                MyClass12.CreateCount.ShouldBe(1);
+                MyClass13.CreateCount.ShouldBe(1);
+            }
+        }
 
         public class MyService
         {
@@ -133,6 +204,69 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
         {
 
         }
+
+        public class MyClass1
+        {
+            public MyClass1(MyClass2 obj)
+            {
+
+            }
+        }
+
+        public class MyClass2
+        {
+            public MyClass2(MyClass3 obj)
+            {
+
+            }
+        }
+
+        public class MyClass3
+        {
+            public MyClass3(MyClass1 obj)
+            {
+
+            }
+        }
+
+        public class MyClass11
+        {
+            public static int CreateCount { get; set; }
+
+            public MyClass12 Obj2 { get; set; }
+
+            public MyClass13 Obj3 { get; set; }
+
+            public MyClass11()
+            {
+                CreateCount++;
+            }
+        }
+
+        public class MyClass12
+        {
+            public static int CreateCount { get; set; }
+
+            public MyClass11 Obj1 { get; set; }
+
+            public MyClass13 Obj3 { get; set; }
+
+            public MyClass12()
+            {
+                CreateCount++;
+            }
+        }
+
+        public class MyClass13
+        {
+            public static int CreateCount { get; set; }
+
+            public MyClass13()
+            {
+                CreateCount++;
+            }
+        }
+
 
         public static IIocManager CreateTestIocManager()
         {
