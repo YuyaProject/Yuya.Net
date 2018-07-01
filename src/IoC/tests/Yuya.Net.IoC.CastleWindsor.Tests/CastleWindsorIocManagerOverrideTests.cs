@@ -7,17 +7,23 @@ using Xunit;
 
 namespace Yuya.Net.IoC.CastleWindsor.Tests
 {
+    /// <summary>
+    /// Castle Windsor Ioc Manager Override Tests
+    /// </summary>
     public class CastleWindsorIocManagerOverrideTests
     {
+        /// <summary>
+        /// Shoulds the transient service not override as default.
+        /// </summary>
         [Fact]
         public void Should_TransientService_Not_Override_As_Default()
         {
             using (IIocManager iocManager = CastleWindsorIocManagerTests.CreateTestIocManager())
             {
                 //Arrange
-                iocManager.Registerer.RegisterTransient<IMyService, MyImpl1>();
-                iocManager.Registerer.RegisterTransient<IMyService, MyImpl2>();
-                iocManager.Registerer.RegisterTransient<IMyService, MyImpl3>();
+                iocManager.Registrar.RegisterTransient<IMyService, MyImpl1>();
+                iocManager.Registrar.RegisterTransient<IMyService, MyImpl2>();
+                iocManager.Registrar.RegisterTransient<IMyService, MyImpl3>();
 
                 //Act
                 var service = iocManager.Resolver.Resolve<IMyService>();
@@ -32,14 +38,17 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the transient service override when using is default.
+        /// </summary>
         [Fact]
         public void Should_TransientService_Override_When_Using_IsDefault()
         {
             using (IIocManager iocManager = CastleWindsorIocManagerTests.CreateTestIocManager())
             {
                 //Arrange
-                iocManager.Registerer.RegisterTransient<IMyService, MyImpl1>();
-                iocManager.Registerer.RegisterTransient<IMyService, MyImpl2>(isDefault: true);
+                iocManager.Registrar.RegisterTransient<IMyService, MyImpl1>();
+                iocManager.Registrar.RegisterTransient<IMyService, MyImpl2>(isDefault: true);
 
                 //Act
                 var service = iocManager.Resolver.Resolve<IMyService>();
@@ -53,15 +62,18 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the transient service override when using is default twice.
+        /// </summary>
         [Fact]
         public void Should_TransientService_Override_When_Using_IsDefault_Twice()
         {
             using (IIocManager iocManager = CastleWindsorIocManagerTests.CreateTestIocManager())
             {
                 //Arrange
-                iocManager.Registerer.RegisterTransient<IMyService, MyImpl1>();
-                iocManager.Registerer.RegisterTransient<IMyService, MyImpl2>(isDefault: true);
-                iocManager.Registerer.RegisterTransient<IMyService, MyImpl3>(isDefault: true);
+                iocManager.Registrar.RegisterTransient<IMyService, MyImpl1>();
+                iocManager.Registrar.RegisterTransient<IMyService, MyImpl2>(isDefault: true);
+                iocManager.Registrar.RegisterTransient<IMyService, MyImpl3>(isDefault: true);
 
                 //Act
                 var service = iocManager.Resolver.Resolve<IMyService>();
@@ -76,15 +88,18 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the transient service get default service.
+        /// </summary>
         [Fact]
         public void Should_TransientService_Get_Default_Service()
         {
             using (IIocManager iocManager = CastleWindsorIocManagerTests.CreateTestIocManager())
             {
                 //Arrange
-                iocManager.Registerer.RegisterTransient<IMyService, MyImpl1>();
-                iocManager.Registerer.RegisterTransient<IMyService, MyImpl2>(isDefault: true);
-                iocManager.Registerer.RegisterTransient<IMyService, MyImpl3>();
+                iocManager.Registrar.RegisterTransient<IMyService, MyImpl1>();
+                iocManager.Registrar.RegisterTransient<IMyService, MyImpl2>(isDefault: true);
+                iocManager.Registrar.RegisterTransient<IMyService, MyImpl3>();
 
                 //Act
                 var service = iocManager.Resolver.Resolve<IMyService>();
@@ -99,15 +114,18 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the singleton service not override as default.
+        /// </summary>
         [Fact]
         public void Should_SingletonService_Not_Override_As_Default()
         {
             using (IIocManager iocManager = CastleWindsorIocManagerTests.CreateTestIocManager())
             {
                 //Arrange
-                iocManager.Registerer.RegisterSingleton<IMyService, MyImpl1>();
-                iocManager.Registerer.RegisterSingleton<IMyService, MyImpl2>();
-                iocManager.Registerer.RegisterSingleton<IMyService, MyImpl3>();
+                iocManager.Registrar.RegisterSingleton<IMyService, MyImpl1>();
+                iocManager.Registrar.RegisterSingleton<IMyService, MyImpl2>();
+                iocManager.Registrar.RegisterSingleton<IMyService, MyImpl3>();
 
                 //Act
                 var service = iocManager.Resolver.Resolve<IMyService>();
@@ -122,14 +140,17 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the singleton service override when using is default.
+        /// </summary>
         [Fact]
         public void Should_SingletonService_Override_When_Using_IsDefault()
         {
             using (IIocManager iocManager = CastleWindsorIocManagerTests.CreateTestIocManager())
             {
                 //Arrange
-                iocManager.Registerer.RegisterSingleton<IMyService, MyImpl1>();
-                iocManager.Registerer.RegisterSingleton<IMyService, MyImpl2>(isDefault: true);
+                iocManager.Registrar.RegisterSingleton<IMyService, MyImpl1>();
+                iocManager.Registrar.RegisterSingleton<IMyService, MyImpl2>(isDefault: true);
 
                 //Act
                 var service = iocManager.Resolver.Resolve<IMyService>();
@@ -143,15 +164,18 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the singleton service override when using is default twice.
+        /// </summary>
         [Fact]
         public void Should_SingletonService_Override_When_Using_IsDefault_Twice()
         {
             using (IIocManager iocManager = CastleWindsorIocManagerTests.CreateTestIocManager())
             {
                 //Arrange
-                iocManager.Registerer.RegisterSingleton<IMyService, MyImpl1>();
-                iocManager.Registerer.RegisterSingleton<IMyService, MyImpl2>(isDefault: true);
-                iocManager.Registerer.RegisterSingleton<IMyService, MyImpl3>(isDefault: true);
+                iocManager.Registrar.RegisterSingleton<IMyService, MyImpl1>();
+                iocManager.Registrar.RegisterSingleton<IMyService, MyImpl2>(isDefault: true);
+                iocManager.Registrar.RegisterSingleton<IMyService, MyImpl3>(isDefault: true);
 
                 //Act
                 var service = iocManager.Resolver.Resolve<IMyService>();
@@ -166,15 +190,18 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the singleton service get default service.
+        /// </summary>
         [Fact]
         public void Should_SingletonService_Get_Default_Service()
         {
             using (IIocManager iocManager = CastleWindsorIocManagerTests.CreateTestIocManager())
             {
                 //Arrange
-                iocManager.Registerer.RegisterSingleton<IMyService, MyImpl1>();
-                iocManager.Registerer.RegisterSingleton<IMyService, MyImpl2>(isDefault: true);
-                iocManager.Registerer.RegisterSingleton<IMyService, MyImpl3>();
+                iocManager.Registrar.RegisterSingleton<IMyService, MyImpl1>();
+                iocManager.Registrar.RegisterSingleton<IMyService, MyImpl2>(isDefault: true);
+                iocManager.Registrar.RegisterSingleton<IMyService, MyImpl3>();
 
                 //Act
                 var service = iocManager.Resolver.Resolve<IMyService>();
@@ -190,15 +217,18 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
         }
 
 
+        /// <summary>
+        /// Shoulds the per thread service not override as default.
+        /// </summary>
         [Fact]
         public void Should_PerThreadService_Not_Override_As_Default()
         {
             using (IIocManager iocManager = CastleWindsorIocManagerTests.CreateTestIocManager())
             {
                 //Arrange
-                iocManager.Registerer.RegisterPerThread<IMyService, MyImpl1>();
-                iocManager.Registerer.RegisterPerThread<IMyService, MyImpl2>();
-                iocManager.Registerer.RegisterPerThread<IMyService, MyImpl3>();
+                iocManager.Registrar.RegisterPerThread<IMyService, MyImpl1>();
+                iocManager.Registrar.RegisterPerThread<IMyService, MyImpl2>();
+                iocManager.Registrar.RegisterPerThread<IMyService, MyImpl3>();
 
                 //Act
                 var service = iocManager.Resolver.Resolve<IMyService>();
@@ -213,14 +243,17 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the per thread service override when using is default.
+        /// </summary>
         [Fact]
         public void Should_PerThreadService_Override_When_Using_IsDefault()
         {
             using (IIocManager iocManager = CastleWindsorIocManagerTests.CreateTestIocManager())
             {
                 //Arrange
-                iocManager.Registerer.RegisterPerThread<IMyService, MyImpl1>();
-                iocManager.Registerer.RegisterPerThread<IMyService, MyImpl2>(isDefault: true);
+                iocManager.Registrar.RegisterPerThread<IMyService, MyImpl1>();
+                iocManager.Registrar.RegisterPerThread<IMyService, MyImpl2>(isDefault: true);
 
                 //Act
                 var service = iocManager.Resolver.Resolve<IMyService>();
@@ -234,15 +267,18 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the per thread service override when using is default twice.
+        /// </summary>
         [Fact]
         public void Should_PerThreadService_Override_When_Using_IsDefault_Twice()
         {
             using (IIocManager iocManager = CastleWindsorIocManagerTests.CreateTestIocManager())
             {
                 //Arrange
-                iocManager.Registerer.RegisterPerThread<IMyService, MyImpl1>();
-                iocManager.Registerer.RegisterPerThread<IMyService, MyImpl2>(isDefault: true);
-                iocManager.Registerer.RegisterPerThread<IMyService, MyImpl3>(isDefault: true);
+                iocManager.Registrar.RegisterPerThread<IMyService, MyImpl1>();
+                iocManager.Registrar.RegisterPerThread<IMyService, MyImpl2>(isDefault: true);
+                iocManager.Registrar.RegisterPerThread<IMyService, MyImpl3>(isDefault: true);
 
                 //Act
                 var service = iocManager.Resolver.Resolve<IMyService>();
@@ -257,15 +293,18 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the per thread service get default service.
+        /// </summary>
         [Fact]
         public void Should_PerThreadService_Get_Default_Service()
         {
             using (IIocManager iocManager = CastleWindsorIocManagerTests.CreateTestIocManager())
             {
                 //Arrange
-                iocManager.Registerer.RegisterPerThread<IMyService, MyImpl1>();
-                iocManager.Registerer.RegisterPerThread<IMyService, MyImpl2>(isDefault: true);
-                iocManager.Registerer.RegisterPerThread<IMyService, MyImpl3>();
+                iocManager.Registrar.RegisterPerThread<IMyService, MyImpl1>();
+                iocManager.Registrar.RegisterPerThread<IMyService, MyImpl2>(isDefault: true);
+                iocManager.Registrar.RegisterPerThread<IMyService, MyImpl3>();
 
                 //Act
                 var service = iocManager.Resolver.Resolve<IMyService>();

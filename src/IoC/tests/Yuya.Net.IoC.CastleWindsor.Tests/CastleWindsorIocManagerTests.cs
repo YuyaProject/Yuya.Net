@@ -6,15 +6,21 @@ using Xunit;
 
 namespace Yuya.Net.IoC.CastleWindsor.Tests
 {
+    /// <summary>
+    /// Castle Windsor Ioc Manager Tests
+    /// </summary>
     public class CastleWindsorIocManagerTests
     {
 
+        /// <summary>
+        /// Shoulds the self register with all interfaces.
+        /// </summary>
         [Fact]
         public void Should_Self_Register_With_All_Interfaces()
         {
             using (IIocManager iocManager = CreateTestIocManager())
             {
-                var registrar = iocManager.Resolver.Resolve<IIocRegisterer>();
+                var registrar = iocManager.Resolver.Resolve<IIocRegistrar>();
                 var resolver = iocManager.Resolver.Resolve<IIocResolver>();
                 var managerByInterface = iocManager.Resolver.Resolve<IIocManager>();
 
@@ -23,25 +29,31 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the get first registered class if registered multiple class for same interface.
+        /// </summary>
         [Fact]
         public void Should_Get_First_Registered_Class_If_Registered_Multiple_Class_For_Same_Interface()
         {
             using (IIocManager iocManager = CreateTestIocManager())
             {
-                iocManager.Registerer.RegisterPerThread<IEmpty, EmptyImplOne>();
-                iocManager.Registerer.RegisterPerThread<IEmpty, EmptyImplTwo>();
+                iocManager.Registrar.RegisterPerThread<IEmpty, EmptyImplOne>();
+                iocManager.Registrar.RegisterPerThread<IEmpty, EmptyImplTwo>();
 
                 iocManager.Resolver.Resolve<IEmpty>().ShouldBeOfType<EmptyImplOne>();
             }
         }
 
+        /// <summary>
+        /// Resolves all test.
+        /// </summary>
         [Fact]
         public void ResolveAll_Test()
         {
             using (IIocManager iocManager = CreateTestIocManager())
             {
-                iocManager.Registerer.RegisterPerThread<IEmpty, EmptyImplOne>();
-                iocManager.Registerer.RegisterPerThread<IEmpty, EmptyImplTwo>();
+                iocManager.Registrar.RegisterPerThread<IEmpty, EmptyImplOne>();
+                iocManager.Registrar.RegisterPerThread<IEmpty, EmptyImplTwo>();
 
                 var instances = iocManager.Resolver.ResolveAll<IEmpty>();
                 instances.Length.ShouldBe(2);
@@ -51,23 +63,29 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
         }
 
 
+        /// <summary>
+        /// Shoulds the call initialize.
+        /// </summary>
         [Fact]
         public void Should_Call_Initialize()
         {
             using (IIocManager iocManager = CreateTestIocManager())
             {
-                iocManager.Registerer.RegisterTransient<MyService>();
+                iocManager.Registrar.RegisterTransient<MyService>();
                 var myService = iocManager.Resolver.Resolve<MyService>();
                 myService.InitializeCount.ShouldBe(0);
             }
         }
 
+        /// <summary>
+        /// Shoulds the call dispose of transient dependency when object is released.
+        /// </summary>
         [Fact]
         public void Should_Call_Dispose_Of_Transient_Dependency_When_Object_Is_Released()
         {
             using (IIocManager iocManager = CreateTestIocManager())
             {
-                iocManager.Registerer.RegisterTransient<SimpleDisposableObject>();
+                iocManager.Registrar.RegisterTransient<SimpleDisposableObject>();
 
                 var obj = iocManager.Resolver.Resolve<SimpleDisposableObject>();
 
@@ -77,12 +95,15 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the call dispose of transient dependency when ioc manager is disposed.
+        /// </summary>
         [Fact]
         public void Should_Call_Dispose_Of_Transient_Dependency_When_IocManager_Is_Disposed()
         {
             using (IIocManager iocManager = CreateTestIocManager())
             {
-                iocManager.Registerer.RegisterTransient<SimpleDisposableObject>();
+                iocManager.Registrar.RegisterTransient<SimpleDisposableObject>();
 
                 var obj = iocManager.Resolver.Resolve<SimpleDisposableObject>();
 
@@ -92,12 +113,15 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the call dispose of singleton dependency when ioc manager is disposed.
+        /// </summary>
         [Fact]
         public void Should_Call_Dispose_Of_Singleton_Dependency_When_IocManager_Is_Disposed()
         {
             using (IIocManager iocManager = CreateTestIocManager())
             {
-                iocManager.Registerer.RegisterSingleton<SimpleDisposableObject>();
+                iocManager.Registrar.RegisterSingleton<SimpleDisposableObject>();
 
                 var obj = iocManager.Resolver.Resolve<SimpleDisposableObject>();
 
@@ -107,14 +131,17 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the fail circular constructor dependency.
+        /// </summary>
         [Fact]
         public void Should_Fail_Circular_Constructor_Dependency()
         {
             using (IIocManager iocManager = CreateTestIocManager())
             {
-                iocManager.Registerer.RegisterTransient<MyClass1>();
-                iocManager.Registerer.RegisterTransient<MyClass2>();
-                iocManager.Registerer.RegisterTransient<MyClass3>();
+                iocManager.Registrar.RegisterTransient<MyClass1>();
+                iocManager.Registrar.RegisterTransient<MyClass2>();
+                iocManager.Registrar.RegisterTransient<MyClass3>();
 
                 Assert.Throws<CircularDependencyException>(() => iocManager.Resolver.Resolve<MyClass1>());
             }
@@ -123,6 +150,9 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
 
 
 
+        /// <summary>
+        /// Shoulds the success circular property injection transient.
+        /// </summary>
         [Fact]
         public void Should_Success_Circular_Property_Injection_Transient()
         {
@@ -132,9 +162,9 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
                 MyClass12.CreateCount = 0;
                 MyClass13.CreateCount = 0;
 
-                iocManager.Registerer.RegisterTransient<MyClass11>();
-                iocManager.Registerer.RegisterTransient<MyClass12>();
-                iocManager.Registerer.RegisterTransient<MyClass13>();
+                iocManager.Registrar.RegisterTransient<MyClass11>();
+                iocManager.Registrar.RegisterTransient<MyClass12>();
+                iocManager.Registrar.RegisterTransient<MyClass13>();
 
                 var obj1 = iocManager.Resolver.Resolve<MyClass11>();
                 obj1.Obj2.ShouldNotBe(null);
@@ -152,6 +182,9 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
             }
         }
 
+        /// <summary>
+        /// Shoulds the success circular property injection singleton.
+        /// </summary>
         [Fact]
         public void Should_Success_Circular_Property_Injection_Singleton()
         {
@@ -161,9 +194,9 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
                 MyClass12.CreateCount = 0;
                 MyClass13.CreateCount = 0;
 
-                iocManager.Registerer.RegisterSingleton<MyClass11>();
-                iocManager.Registerer.RegisterSingleton<MyClass12>();
-                iocManager.Registerer.RegisterSingleton<MyClass13>();
+                iocManager.Registrar.RegisterSingleton<MyClass11>();
+                iocManager.Registrar.RegisterSingleton<MyClass12>();
+                iocManager.Registrar.RegisterSingleton<MyClass13>();
 
                 var obj1 = iocManager.Resolver.Resolve<MyClass11>();
                 obj1.Obj2.ShouldNotBe(null);
@@ -268,6 +301,10 @@ namespace Yuya.Net.IoC.CastleWindsor.Tests
         }
 
 
+        /// <summary>
+        /// Creates the test ioc manager.
+        /// </summary>
+        /// <returns></returns>
         public static IIocManager CreateTestIocManager()
         {
             IocBuilder builder = new IocBuilder("Demo");

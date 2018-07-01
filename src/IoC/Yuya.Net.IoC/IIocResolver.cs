@@ -2,6 +2,10 @@
 
 namespace Yuya.Net.IoC
 {
+    /// <summary>
+    /// IoC Resolver 
+    /// </summary>
+    /// <seealso cref="System.IDisposable" />
     public interface IIocResolver : IDisposable
     {
         /// <summary>

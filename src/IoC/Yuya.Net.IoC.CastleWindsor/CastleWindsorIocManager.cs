@@ -5,19 +5,36 @@ using System.Linq;
 
 namespace Yuya.Net.IoC.CastleWindsor
 {
+    /// <summary>
+    /// Castle Windsor Ioc Manager
+    /// </summary>
+    /// <seealso cref="Yuya.Net.IoC.IocManagerBase" />
     internal class CastleWindsorIocManager : IocManagerBase
     {
+        /// <summary>
+        /// The private castle windsor container
+        /// </summary>
         private readonly WindsorContainer Container;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CastleWindsorIocManager"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
         internal CastleWindsorIocManager(string name) : base(name)
         {
             // Create a Instance
             Container = new WindsorContainer();
 
             // Add this class to container
-            Container.Register(Component.For<IIocManager, IIocResolver, IIocRegisterer>().Instance(this));
+            Container.Register(Component.For<IIocManager, IIocResolver, IIocRegistrar>().Instance(this));
         }
 
+        /// <summary>
+        /// Gets the name of the ioc type.
+        /// </summary>
+        /// <value>
+        /// The name of the ioc type.
+        /// </value>
         public override string IocTypeName => "CastleWindsor";
 
         #region IsRegister
@@ -41,12 +58,26 @@ namespace Yuya.Net.IoC.CastleWindsor
         #endregion
 
         #region Register Methods
+        /// <summary>
+        /// Registers the specified implementation.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementation">The implementation.</param>
+        /// <returns></returns>
         public override IIocManager Register<TService>(TService implementation)
         {
             Container.Register(Component.For<TService>().Instance(implementation));
             return this;
         }
 
+        /// <summary>
+        /// Registers the singleton.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <param name="isDefault">if set to <c>true</c> [is default].</param>
+        /// <returns></returns>
         public override IIocManager RegisterSingleton<TService, TImplementation>(string name = null, bool isDefault = false)
         {
             var config = Component.For<TService>().ImplementedBy<TImplementation>().LifestyleSingleton();
@@ -61,6 +92,13 @@ namespace Yuya.Net.IoC.CastleWindsor
             return this;
         }
 
+        /// <summary>
+        /// Registers the singleton.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <param name="isDefault">if set to <c>true</c> [is default].</param>
+        /// <returns></returns>
         public override IIocManager RegisterSingleton<TService>(string name = null, bool isDefault = false)
         {
             ComponentRegistration<TService> config = Component.For<TService>().LifestyleSingleton();
@@ -75,6 +113,14 @@ namespace Yuya.Net.IoC.CastleWindsor
             return this;
         }
 
+        /// <summary>
+        /// Registers the per thread.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <param name="isDefault">if set to <c>true</c> [is default].</param>
+        /// <returns></returns>
         public override IIocManager RegisterPerThread<TService, TImplementation>(string name = null, bool isDefault = false)
         {
             var config = Component.For<TService>().ImplementedBy<TImplementation>().LifestylePerThread();
@@ -90,6 +136,13 @@ namespace Yuya.Net.IoC.CastleWindsor
             return this;
         }
 
+        /// <summary>
+        /// Registers the per thread.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <param name="isDefault">if set to <c>true</c> [is default].</param>
+        /// <returns></returns>
         public override IIocManager RegisterPerThread<TService>(string name = null, bool isDefault = false)
         {
             ComponentRegistration<TService> config = Component.For<TService>().LifestylePerThread();
@@ -104,6 +157,14 @@ namespace Yuya.Net.IoC.CastleWindsor
             return this;
         }
 
+        /// <summary>
+        /// Registers the transient.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <param name="isDefault">if set to <c>true</c> [is default].</param>
+        /// <returns></returns>
         public override IIocManager RegisterTransient<TService, TImplementation>(string name = null, bool isDefault = false)
         {
             var config = Component.For<TService>().ImplementedBy<TImplementation>().LifestyleTransient();
@@ -119,6 +180,13 @@ namespace Yuya.Net.IoC.CastleWindsor
             return this;
         }
 
+        /// <summary>
+        /// Registers the transient.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <param name="isDefault">if set to <c>true</c> [is default].</param>
+        /// <returns></returns>
         public override IIocManager RegisterTransient<TService>(string name = null, bool isDefault = false)
         {
             ComponentRegistration<TService> config = Component.For<TService>().LifestyleTransient();
@@ -137,6 +205,12 @@ namespace Yuya.Net.IoC.CastleWindsor
 
         #region Resolve Methods
 
+        /// <summary>
+        /// Resolves the name of the by.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public override TService ResolveByName<TService>(string name)
         {
             return Container.Resolve<TService>(name);
@@ -190,35 +264,59 @@ namespace Yuya.Net.IoC.CastleWindsor
 
         /// <summary>
         /// Gets an object from IOC container.
-        /// Returning object must be Released (see <see cref="IIocResolver.Release"/>) after usage.
-        /// </summary> 
+        /// Returning object must be Released (see <see cref="IIocResolver.Release" />) after usage.
+        /// </summary>
         /// <param name="type">Type of the object to get</param>
         /// <param name="argumentsAsAnonymousType">Constructor arguments</param>
-        /// <returns>The instance object</returns>
+        /// <returns>
+        /// The instance object
+        /// </returns>
         public override object Resolve(Type type, object argumentsAsAnonymousType)
         {
             return Container.Resolve(type, argumentsAsAnonymousType);
         }
 
-        ///<inheritdoc/>
+        /// <summary>
+        /// Resolves all.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <inheritdoc />
         public override T[] ResolveAll<T>()
         {
             return Container.ResolveAll<T>();
         }
 
-        ///<inheritdoc/>
+        /// <summary>
+        /// Resolves all.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="argumentsAsAnonymousType">Type of the arguments as anonymous.</param>
+        /// <returns></returns>
+        /// <inheritdoc />
         public override T[] ResolveAll<T>(object argumentsAsAnonymousType)
         {
             return Container.ResolveAll<T>(argumentsAsAnonymousType);
         }
 
-        ///<inheritdoc/>
+        /// <summary>
+        /// Resolves all.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        /// <inheritdoc />
         public override object[] ResolveAll(Type type)
         {
             return Container.ResolveAll(type).Cast<object>().ToArray();
         }
 
-        ///<inheritdoc/>
+        /// <summary>
+        /// Resolves all.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="argumentsAsAnonymousType">Type of the arguments as anonymous.</param>
+        /// <returns></returns>
+        /// <inheritdoc />
         public override object[] ResolveAll(Type type, object argumentsAsAnonymousType)
         {
             return Container.ResolveAll(type, argumentsAsAnonymousType).Cast<object>().ToArray();
@@ -234,6 +332,9 @@ namespace Yuya.Net.IoC.CastleWindsor
         }
         #endregion
 
+        /// <summary>
+        /// Called when [disposing].
+        /// </summary>
         protected override void OnDisposing()
         {
             Container.Dispose();
