@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.0;net45;net451;net452;net46;net461;net462;net47;net471</TargetFrameworks>
+    <Authors>Alper Konuralp</Authors>
+    <PackageLicenseUrl>https://github.com/YuyaProject/Yuya.Net/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/YuyaProject/Yuya.Net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/YuyaProject/Yuya.Net</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.0\Yuya.Net.OData.Server.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Yuya.Net.Core\Yuya.Net.Core.csproj" />
+  </ItemGroup>
+
+</Project>
