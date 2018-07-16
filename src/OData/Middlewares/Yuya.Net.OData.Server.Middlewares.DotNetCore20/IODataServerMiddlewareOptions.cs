@@ -6,6 +6,6 @@ namespace Yuya.Net.OData.Server.DotNetCore20
     {
         PathString BasePath { get; }
 
-        ODataVersion Version { get; }
+        ODataVersionEnum Version { get; }
     }
 }

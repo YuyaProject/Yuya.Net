@@ -1,4 +1,4 @@
 ﻿
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Yuya.Net.IoC.Tests")]
+[assembly: InternalsVisibleTo("Yuya.Net.OData.Server.Tests")]

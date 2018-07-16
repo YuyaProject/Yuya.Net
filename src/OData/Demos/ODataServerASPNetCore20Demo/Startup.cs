@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Yuya.Net.OData.Server;
 using Yuya.Net.OData.Server.DotNetCore20;
+using Yuya.Net.Serializers;
 
 namespace ODataServerASPNetCore20Demo
 {
@@ -23,6 +25,8 @@ namespace ODataServerASPNetCore20Demo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSingleton<IJsonSerializer, DataContractJsonSerializer>();
+            services.AddSingleton<IODataJsonSerializer, ODataJsonSerializer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

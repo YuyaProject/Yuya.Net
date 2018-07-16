@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yuya.Net.OData.Server.DotNetCore20
+namespace Yuya.Net.OData.Server.DotNetCore20.Services
 {
     internal static class ODataService
     {
-        public static IODataService Create(HttpContext httpContext, IODataServerMiddlewareOptions optionValues)
+        public static IService Create(HttpContext httpContext, IODataServerMiddlewareOptions optionValues)
         {
-            if (optionValues.Version == ODataVersion.V4)
+            if (optionValues.Version == ODataVersionEnum.V4)
             {
-                return new ODataServiceV4(httpContext, optionValues);
+                return new ODataServiceV4(httpContext, optionValues, new QueryStringResolver());
             }
             else
             {

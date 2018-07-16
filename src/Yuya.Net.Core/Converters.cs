@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Yuya.Net.Core
+namespace Yuya.Net
 {
     /// <summary>
     /// Bu sınıf temel MS.Net tiplerine olan tip dönüşümleri için kullanacağımız statik sınıftır.
